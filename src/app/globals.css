@@ -1,0 +1,234 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Vazirmatn", "Segoe UI", Tahoma, ui-sans-serif, system-ui, sans-serif;
+
+  --color-ink-950: #06070b;
+  --color-ink-900: #0a0c12;
+  --color-ink-850: #0e1119;
+  --color-ink-800: #141824;
+  --color-ink-700: #1d2333;
+
+  --color-gold-200: #fbeec3;
+  --color-gold-300: #f6dd9a;
+  --color-gold-400: #eec65f;
+  --color-gold-500: #dfa938;
+  --color-gold-600: #b57f22;
+
+  --color-up: #2fca8c;
+  --color-down: #ff5f6e;
+
+  --animate-marquee: marquee 60s linear infinite;
+  --animate-fade-in-up: fade-in-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  --animate-pulse-dot: pulse-dot 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-spin-slow: spin 1s linear infinite;
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(50%);
+    }
+  }
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes pulse-dot {
+    0%,
+    100% {
+      box-shadow: 0 0 0 0 rgb(47 202 140 / 0.55);
+    }
+    60% {
+      box-shadow: 0 0 0 8px rgb(47 202 140 / 0);
+    }
+  }
+  @keyframes shimmer {
+    0% {
+      background-position: 200% 0;
+    }
+    100% {
+      background-position: -200% 0;
+    }
+  }
+  @keyframes flash-up {
+    0% {
+      background-color: rgb(47 202 140 / 0.16);
+    }
+    100% {
+      background-color: transparent;
+    }
+  }
+  @keyframes flash-down {
+    0% {
+      background-color: rgb(255 95 110 / 0.16);
+    }
+    100% {
+      background-color: transparent;
+    }
+  }
+  @keyframes breathe {
+    0%,
+    100% {
+      opacity: 0.5;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-ink-950);
+  color: #d8dce6;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: rgb(238 198 95 / 0.28);
+  color: #fff;
+}
+
+/* اسکرول‌بار سفارشی */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgb(255 255 255 / 0.1);
+  border-radius: 99px;
+  border: 2px solid var(--color-ink-950);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(238 198 95 / 0.35);
+}
+
+@layer utilities {
+  .num {
+    font-variant-numeric: tabular-nums;
+  }
+
+  .gold-text {
+    background: linear-gradient(115deg, #fbeec3 0%, #eec65f 45%, #c98f2c 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .glass {
+    background: linear-gradient(
+      180deg,
+      rgb(255 255 255 / 0.045),
+      rgb(255 255 255 / 0.018)
+    );
+    border: 1px solid rgb(255 255 255 / 0.075);
+  }
+
+  .glass-deep {
+    background: linear-gradient(
+      180deg,
+      rgb(14 17 25 / 0.72),
+      rgb(10 12 18 / 0.82)
+    );
+    border: 1px solid rgb(255 255 255 / 0.07);
+    backdrop-filter: blur(18px);
+  }
+
+  .dot-grid {
+    background-image: radial-gradient(
+      rgb(255 255 255 / 0.055) 1px,
+      transparent 1.5px
+    );
+    background-size: 24px 24px;
+    mask-image: radial-gradient(
+      ellipse 90% 60% at 50% 0%,
+      black 30%,
+      transparent 75%
+    );
+    -webkit-mask-image: radial-gradient(
+      ellipse 90% 60% at 50% 0%,
+      black 30%,
+      transparent 75%
+    );
+  }
+
+  .noise::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    pointer-events: none;
+    opacity: 0.032;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .card-hover {
+    transition:
+      transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.4s,
+      box-shadow 0.4s;
+  }
+  .card-hover:hover {
+    transform: translateY(-4px);
+    border-color: rgb(238 198 95 / 0.3);
+    box-shadow:
+      0 24px 60px -24px rgb(0 0 0 / 0.85),
+      0 0 0 1px rgb(238 198 95 / 0.1),
+      0 0 44px -14px rgb(238 198 95 / 0.22);
+  }
+
+  .flash-up {
+    animation: flash-up 0.95s ease-out;
+  }
+  .flash-down {
+    animation: flash-down 0.95s ease-out;
+  }
+
+  .ticker-track {
+    animation: var(--animate-marquee);
+    will-change: transform;
+  }
+  .ticker:hover .ticker-track {
+    animation-play-state: paused;
+  }
+
+  .skeleton {
+    background: linear-gradient(
+      90deg,
+      rgb(255 255 255 / 0.04) 25%,
+      rgb(255 255 255 / 0.09) 37%,
+      rgb(255 255 255 / 0.04) 63%
+    );
+    background-size: 400% 100%;
+    animation: shimmer 1.4s ease infinite;
+  }
+
+  .breathe {
+    animation: breathe 3.2s ease-in-out infinite;
+  }
+
+  .control-btn {
+    transition:
+      background-color 0.25s,
+      color 0.25s,
+      border-color 0.25s,
+      transform 0.15s;
+  }
+  .control-btn:active {
+    transform: scale(0.96);
+  }
+}

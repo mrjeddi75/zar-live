@@ -1,0 +1,27 @@
+# dependencies
+node_modules/
+
+# next.js
+.next/
+out/
+
+# production
+build/
+
+# env files (مهم: رمزها هرگز به گیت نمی‌روند)
+.env
+.env*.local
+dev.vars
+
+# cloudflare / opennext
+.open-next/
+.wrangler/
+cloudflare-env.d.ts
+
+# logs
+*.log
+
+# os / editor
+.DS_Store
+.vscode/
+.idea/

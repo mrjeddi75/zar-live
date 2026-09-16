@@ -49,4 +49,11 @@ export interface LiveRatesPayload {
   serverTime: string;
   /** از کش استال سرو شده (منبع در دسترس نبود) */
   stale: boolean;
+  /** سلامت لایهٔ دیتابیس و تعداد رکوردهای تازه */
+  db?: {
+    ok: boolean;
+    latestUpserted: number;
+    historyInserted: number;
+    error: string | null;
+  };
 }

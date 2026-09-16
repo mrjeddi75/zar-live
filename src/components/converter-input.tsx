@@ -18,24 +18,19 @@ export function ConverterInput({ label, rate, unit, digits }: Props) {
   const result = val ? parsed * rate : null;
 
   return (
-    <div className="mt-3 rounded-xl border border-white/[0.07] bg-white/[0.025] p-2.5">
-      <label className="mb-1.5 flex items-center gap-1.5 text-[10px] font-medium text-white/35">
-        <span className="inline-flex size-4 items-center justify-center rounded bg-gold-400/12 text-[9px] font-bold text-gold-400">
-          🔢
-        </span>
-        {label}
-      </label>
-      <div className="flex items-center gap-2">
+    <div className="surface-soft mt-3 p-2.5">
+      <label className="mb-1.5 block text-[11px] text-slate-500">{label}</label>
+      <div className="flex flex-wrap items-center gap-2">
         <input
           type="text"
           inputMode="decimal"
           value={val}
           onChange={(e) => setVal(e.target.value)}
           placeholder="مثلاً ۱۰۰۰"
-          className="w-full rounded-lg border border-white/[0.08] bg-ink-900/70 px-3 py-1.5 text-sm text-white placeholder:text-white/20 focus:border-gold-400/40 focus:outline-none focus:ring-1 focus:ring-gold-400/15 num"
+          className="surface w-full flex-1 px-3 py-2 text-sm outline-none focus:border-blue-300"
         />
         {result !== null && (
-          <span className="num shrink-0 whitespace-nowrap text-sm font-bold text-gold-300">
+          <span className="num text-sm font-bold text-slate-800">
             {formatPrice(result, digits)} {unit}
           </span>
         )}

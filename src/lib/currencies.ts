@@ -93,6 +93,14 @@ const GOLD_GRADIENTS: Array<[string, string]> = [
   ["#f7e3a1", "#a06d15"],
 ];
 
+/** پالت نقره‌ای اختصاصی انس نقره */
+const SILVER_GRADIENTS: Array<[string, string]> = [
+  ["#e8eef5", "#94a3b8"],
+  ["#d0d9e4", "#7b8fa3"],
+  ["#c5d1de", "#6b83a0"],
+  ["#bcc8d8", "#5d7899"],
+];
+
 function hashCode(s: string): number {
   let h = 0;
   for (let i = 0; i < s.length; i++) {
@@ -102,11 +110,16 @@ function hashCode(s: string): number {
 }
 
 export function chipGradient(code: string): string {
-  if (isGoldCode(code)) {
-    const [a, b] = GOLD_GRADIENTS[hashCode(code.toUpperCase()) % GOLD_GRADIENTS.length];
+  const c = code.toLowerCase();
+  if (c === "xag") {
+    const [a, b] = SILVER_GRADIENTS[hashCode(c) % SILVER_GRADIENTS.length];
     return `linear-gradient(135deg, ${a}, ${b})`;
   }
-  const [a, b] = CHIP_GRADIENTS[hashCode(code.toUpperCase()) % CHIP_GRADIENTS.length];
+  if (isGoldCode(c)) {
+    const [a, b] = GOLD_GRADIENTS[hashCode(c) % GOLD_GRADIENTS.length];
+    return `linear-gradient(135deg, ${a}, ${b})`;
+  }
+  const [a, b] = CHIP_GRADIENTS[hashCode(c) % CHIP_GRADIENTS.length];
   return `linear-gradient(135deg, ${a}, ${b})`;
 }
 

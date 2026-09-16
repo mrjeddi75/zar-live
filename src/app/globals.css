@@ -3,232 +3,146 @@
 @theme {
   --font-sans: "Vazirmatn", "Segoe UI", Tahoma, ui-sans-serif, system-ui, sans-serif;
 
-  --color-ink-950: #06070b;
-  --color-ink-900: #0a0c12;
-  --color-ink-850: #0e1119;
-  --color-ink-800: #141824;
-  --color-ink-700: #1d2333;
+  --color-bg: #f6f7fb;
+  --color-surface: #ffffff;
+  --color-border: #e7eaf1;
+  --color-text: #0f172a;
+  --color-muted: #64748b;
+  --color-primary: #2563eb;
+  --color-success: #16a34a;
+  --color-danger: #dc2626;
+  --color-silver-300: #cbd5e1;
+  --color-silver-500: #94a3b8;
 
-  --color-gold-200: #fbeec3;
-  --color-gold-300: #f6dd9a;
-  --color-gold-400: #eec65f;
-  --color-gold-500: #dfa938;
-  --color-gold-600: #b57f22;
+  --animate-fade-in: fade-in 0.22s ease-out both;
+  --animate-pop-in: pop-in 0.18s ease-out both;
+  --animate-spin-soft: spin 0.8s linear infinite;
 
-  --color-up: #2fca8c;
-  --color-down: #ff5f6e;
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 
-  --animate-marquee: marquee 60s linear infinite;
-  --animate-fade-in-up: fade-in-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
-  --animate-pulse-dot: pulse-dot 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  --animate-spin-slow: spin 1s linear infinite;
+  @keyframes pop-in {
+    from { opacity: 0; transform: scale(0.98); }
+    to { opacity: 1; transform: scale(1); }
+  }
 
-  @keyframes marquee {
-    from {
-      transform: translateX(0);
-    }
-    to {
-      transform: translateX(50%);
-    }
-  }
-  @keyframes fade-in-up {
-    from {
-      opacity: 0;
-      transform: translateY(16px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  @keyframes pulse-dot {
-    0%,
-    100% {
-      box-shadow: 0 0 0 0 rgb(47 202 140 / 0.55);
-    }
-    60% {
-      box-shadow: 0 0 0 8px rgb(47 202 140 / 0);
-    }
-  }
-  @keyframes shimmer {
-    0% {
-      background-position: 200% 0;
-    }
-    100% {
-      background-position: -200% 0;
-    }
-  }
   @keyframes flash-up {
-    0% {
-      background-color: rgb(47 202 140 / 0.16);
-    }
-    100% {
-      background-color: transparent;
-    }
+    0% { background: rgb(22 163 74 / 0.08); }
+    100% { background: transparent; }
   }
+
   @keyframes flash-down {
-    0% {
-      background-color: rgb(255 95 110 / 0.16);
-    }
-    100% {
-      background-color: transparent;
-    }
+    0% { background: rgb(220 38 38 / 0.08); }
+    100% { background: transparent; }
   }
-  @keyframes breathe {
-    0%,
-    100% {
-      opacity: 0.5;
-    }
-    50% {
-      opacity: 1;
-    }
+
+  @keyframes shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
   }
 }
 
-html {
-  scroll-behavior: smooth;
+html, body {
+  background: var(--color-bg);
+  color: var(--color-text);
 }
 
 body {
-  background-color: var(--color-ink-950);
-  color: #d8dce6;
-  overflow-x: hidden;
+  min-height: 100dvh;
 }
 
 ::selection {
-  background: rgb(238 198 95 / 0.28);
-  color: #fff;
-}
-
-/* اسکرول‌بار سفارشی */
-::-webkit-scrollbar {
-  width: 10px;
-  height: 8px;
-}
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-::-webkit-scrollbar-thumb {
-  background: rgb(255 255 255 / 0.1);
-  border-radius: 99px;
-  border: 2px solid var(--color-ink-950);
-}
-::-webkit-scrollbar-thumb:hover {
-  background: rgb(238 198 95 / 0.35);
+  background: rgb(37 99 235 / 0.2);
 }
 
 @layer utilities {
-  .num {
-    font-variant-numeric: tabular-nums;
+  .num { font-variant-numeric: tabular-nums; }
+
+  .surface {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 1rem;
   }
 
-  .gold-text {
-    background: linear-gradient(115deg, #fbeec3 0%, #eec65f 45%, #c98f2c 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+  .surface-soft {
+    background: #f8fafc;
+    border: 1px solid var(--color-border);
+    border-radius: 0.9rem;
   }
 
-  .glass {
-    background: linear-gradient(
-      180deg,
-      rgb(255 255 255 / 0.045),
-      rgb(255 255 255 / 0.018)
-    );
-    border: 1px solid rgb(255 255 255 / 0.075);
+  .card-clean {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 1rem;
+    box-shadow: 0 8px 20px -16px rgb(15 23 42 / 0.25);
   }
 
-  .glass-deep {
-    background: linear-gradient(
-      180deg,
-      rgb(14 17 25 / 0.72),
-      rgb(10 12 18 / 0.82)
-    );
-    border: 1px solid rgb(255 255 255 / 0.07);
-    backdrop-filter: blur(18px);
+  .card-clean-hover {
+    transition: all 0.18s ease;
   }
 
-  .dot-grid {
-    background-image: radial-gradient(
-      rgb(255 255 255 / 0.055) 1px,
-      transparent 1.5px
-    );
-    background-size: 24px 24px;
-    mask-image: radial-gradient(
-      ellipse 90% 60% at 50% 0%,
-      black 30%,
-      transparent 75%
-    );
-    -webkit-mask-image: radial-gradient(
-      ellipse 90% 60% at 50% 0%,
-      black 30%,
-      transparent 75%
-    );
+  .card-clean-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 24px -20px rgb(15 23 42 / 0.3);
+    border-color: #d8dfeb;
   }
 
-  .noise::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: 40;
-    pointer-events: none;
-    opacity: 0.032;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  .title-main { @apply text-2xl sm:text-3xl font-black tracking-tight text-slate-900; }
+  .text-muted { color: var(--color-muted); }
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-3.5 py-2 text-sm font-semibold transition;
+    border: 1px solid var(--color-border);
+    background: #fff;
+    color: #0f172a;
   }
 
-  .card-hover {
-    transition:
-      transform 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-      border-color 0.4s,
-      box-shadow 0.4s;
-  }
-  .card-hover:hover {
-    transform: translateY(-4px);
-    border-color: rgb(238 198 95 / 0.3);
-    box-shadow:
-      0 24px 60px -24px rgb(0 0 0 / 0.85),
-      0 0 0 1px rgb(238 198 95 / 0.1),
-      0 0 44px -14px rgb(238 198 95 / 0.22);
+  .btn:hover { background: #f8fafc; }
+
+  .btn-primary {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: #fff;
   }
 
-  .flash-up {
-    animation: flash-up 0.95s ease-out;
-  }
-  .flash-down {
-    animation: flash-down 0.95s ease-out;
+  .btn-primary:hover { background: #1d4ed8; }
+
+  .chip {
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-1 text-xs font-semibold;
+    border: 1px solid var(--color-border);
+    background: #f8fafc;
+    color: #334155;
   }
 
-  .ticker-track {
-    animation: var(--animate-marquee);
-    will-change: transform;
+  .chip-up {
+    background: rgb(22 163 74 / 0.08);
+    border-color: rgb(22 163 74 / 0.18);
+    color: #15803d;
   }
-  .ticker:hover .ticker-track {
-    animation-play-state: paused;
+
+  .chip-down {
+    background: rgb(220 38 38 / 0.08);
+    border-color: rgb(220 38 38 / 0.18);
+    color: #b91c1c;
   }
+
+  .flash-up { animation: flash-up 0.7s ease; }
+  .flash-down { animation: flash-down 0.7s ease; }
 
   .skeleton {
-    background: linear-gradient(
-      90deg,
-      rgb(255 255 255 / 0.04) 25%,
-      rgb(255 255 255 / 0.09) 37%,
-      rgb(255 255 255 / 0.04) 63%
-    );
+    background: linear-gradient(90deg, #eef2f7 25%, #f8fafc 37%, #eef2f7 63%);
     background-size: 400% 100%;
-    animation: shimmer 1.4s ease infinite;
-  }
-
-  .breathe {
-    animation: breathe 3.2s ease-in-out infinite;
+    animation: shimmer 1.2s infinite;
+    border-radius: 0.75rem;
   }
 
   .control-btn {
-    transition:
-      background-color 0.25s,
-      color 0.25s,
-      border-color 0.25s,
-      transform 0.15s;
+    transition: all 0.15s ease;
   }
+
   .control-btn:active {
-    transform: scale(0.96);
+    transform: scale(0.97);
   }
 }

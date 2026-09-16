@@ -10,10 +10,12 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    // sanitize: only allow alphanumeric + : - _
-    if (!/^[a-zA-Z0-9:_-]+$/.test(id)) {
+    // sanitize: allow url-safe unicode ids too (gold names can include fa chars in source id)
+    if (!id || id.length > 400) {
       return Response.json({ ok: false, error: "invalid id" }, { status: 400 });
     }
+
+    const safeId = decodeURIComponent(id).slice(0, 96);
 
     const rows = await db
       .select({
@@ -23,14 +25,14 @@ export async function GET(
         fetchedAt: rateHistory.fetchedAt,
       })
       .from(rateHistory)
-      .where(eq(rateHistory.rateId, id))
+      .where(eq(rateHistory.rateId, safeId))
       .orderBy(desc(rateHistory.fetchedAt))
       .limit(120);
 
     // reverse to chronological order
     rows.reverse();
 
-    return Response.json({ ok: true, id, points: rows });
+    return Response.json({ ok: true, id: safeId, points: rows });
   } catch (e) {
     const msg = e instanceof Error ? e.message : "unknown";
     return Response.json({ ok: false, error: msg }, { status: 500 });

@@ -19,6 +19,7 @@ const FORCE_HISTORY_EVERY_MS = 5 * 60_000; // هر ۵ دقیقه یک نمونه
 
 let cache: { payload: LiveRatesPayload; at: number } | null = null;
 let inFlight: Promise<LiveRatesPayload> | null = null;
+let ensureTablesPromise: Promise<void> | null = null;
 
 export async function getLiveRates(): Promise<LiveRatesPayload> {
   if (cache && Date.now() - cache.at < CACHE_TTL_MS) return cache.payload;
@@ -36,7 +37,72 @@ export async function getLiveRates(): Promise<LiveRatesPayload> {
   return inFlight;
 }
 
+async function ensureTables() {
+  if (ensureTablesPromise) return ensureTablesPromise;
+
+  ensureTablesPromise = (async () => {
+    try {
+      await db.execute(sql`
+        create table if not exists rate_history (
+          id serial primary key,
+          rate_id varchar(96) not null,
+          code varchar(24) not null,
+          name varchar(96) not null,
+          kind varchar(8) not null default 'currency',
+          buy double precision not null,
+          sell double precision not null,
+          direction varchar(8) not null,
+          source varchar(16) not null,
+          fetched_at timestamptz not null default now()
+        )
+      `);
+
+      await db.execute(sql`
+        create index if not exists rate_history_rate_time_idx
+        on rate_history(rate_id, fetched_at)
+      `);
+
+      await db.execute(sql`
+        create index if not exists rate_history_kind_time_idx
+        on rate_history(kind, fetched_at)
+      `);
+
+      await db.execute(sql`
+        create table if not exists rate_latest (
+          rate_id varchar(96) primary key,
+          code varchar(24) not null,
+          name varchar(96) not null,
+          kind varchar(8) not null,
+          buy double precision not null,
+          sell double precision not null,
+          direction varchar(8) not null,
+          source varchar(16) not null,
+          changed_at timestamptz not null default now(),
+          seen_at timestamptz not null default now()
+        )
+      `);
+
+      await db.execute(sql`
+        create index if not exists rate_latest_kind_idx on rate_latest(kind)
+      `);
+      await db.execute(sql`
+        create index if not exists rate_latest_code_idx on rate_latest(code)
+      `);
+    } catch (err) {
+      const message = err instanceof Error ? err.message : "ensure tables failed";
+      console.error("[rates][db] ensure tables failed:", message);
+      // یک بار ریست می‌کنیم تا در درخواست بعدی دوباره تلاش شود
+      ensureTablesPromise = null;
+      throw err;
+    }
+  })();
+
+  return ensureTablesPromise;
+}
+
 async function refresh(): Promise<LiveRatesPayload> {
+  await ensureTables();
+
   const [curRes, goldRes] = await Promise.allSettled([
     fetchRawRates(),
     fetchRawGolds(),
